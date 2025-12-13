@@ -1,0 +1,13 @@
+{
+  "name": "escrow-program",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "anchor test"
+  },
+  "devDependencies": {
+    "@coral-xyz/anchor": "^0.29.0",
+    "chai": "^4.4.1",
+    "typescript": "^5.3.3"
+  }
+}

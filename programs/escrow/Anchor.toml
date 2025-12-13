@@ -1,0 +1,12 @@
+[workspace]
+types = "target/idl"
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[programs.localnet]
+escrow = "Escrw111111111111111111111111111111111111111"
+
+[scripts]
+test = "pnpm -C programs/escrow test"

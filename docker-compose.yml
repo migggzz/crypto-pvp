@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: kalshi_sol_pvp
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  api:
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      API_JWT_SECRET: ${API_JWT_SECRET}
+      KALSHI_BASE_URL: ${KALSHI_BASE_URL}
+      SOLANA_RPC_URL: ${SOLANA_RPC_URL}
+      PROGRAM_ID: ${PROGRAM_ID}
+      ORACLE_AUTHORITY_KEYPAIR: ${ORACLE_AUTHORITY_KEYPAIR}
+      TREASURY_PUBKEY: ${TREASURY_PUBKEY}
+      WEB_ORIGIN: ${WEB_ORIGIN}
+    ports:
+      - "38000:8000"
+    depends_on:
+      - postgres
+      - redis
+
+  web:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    env_file: .env
+    environment:
+      NEXT_PUBLIC_API_BASE: http://api:8000
+      NEXT_PUBLIC_SOLANA_NETWORK: http://localhost:8899
+      NEXT_PUBLIC_PROGRAM_ID: ${PROGRAM_ID}
+    ports:
+      - "33000:3000"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

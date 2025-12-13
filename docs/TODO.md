@@ -1,0 +1,16 @@
+- [ ] Replace Kalshi endpoints with official authenticated/public market feeds instead of stub data.
+- [ ] Wire frontend challenge creation/join/deposit flows to real on-chain transactions (wallet-signed) and pass PDAs back to the API.
+- [ ] Add real queue-driven resolution pipeline (worker consuming Kalshi resolutions, enqueueing jobs with side and tx data).
+- [ ] Secure SIWS JWT with rotating secrets and refresh tokens; add `/auth/me` guard middleware in web.
+- [ ] Implement role-based access control so only the oracle authority can hit `/resolution` routes.
+- [ ] Add API integration tests covering SIWS, markets cache, challenge CRUD, and resolution.
+- [ ] Add migration/Prisma schema evolution for treasury fee percentages and SPL-token support.
+- [ ] Extend escrow program to support SPL token vaults and configurable fees.
+- [ ] Add cancel/refund flows in the frontend that call the on-chain `cancel` instruction.
+- [ ] Store on-chain tx signatures for initialize/join/deposit/resolve in Postgres for auditability.
+- [ ] Expose a public `/markets/refresh` endpoint (authenticated) for manual cache refresh from Kalshi.
+- [ ] Build admin UI for worker queue visibility and manual replays.
+- [ ] Harden vault PDA sizing and add account-size/unit tests on the program.
+- [ ] Add better error surfaces in the UI (toasts) and optimistic UI updates.
+- [ ] Create production Dockerfiles and CI workflows (lint, typecheck, anchor test, API test).
+- [ ] Document oracle authority key management (KMS/HSM) and rotate keys across environments.

@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ChallengeStatus {
+  OPEN
+  LIVE
+  READY_FOR_RESOLVE
+  RESOLVED
+  CANCELLED
+}
+
+model Market {
+  ticker    String   @id
+  title     String
+  closeTime DateTime
+  status    String
+  lastPrice Float?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  challenges Challenge[]
+}
+
+model Challenge {
+  id               String   @id
+  challengeId      BigInt?
+  ticker           String
+  creatorPublicKey String
+  opponentPublicKey String?
+  creatorSide      Int
+  opponentSide     Int?
+  stakeLamports    BigInt
+  status           ChallengeStatus
+  resultSide       Int?
+  vaultPda         String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  deposits         Deposit[]
+  market           Market?  @relation(fields: [ticker], references: [ticker])
+}
+
+model Deposit {
+  id             String   @id @default(cuid())
+  challengeId    String
+  userPublicKey  String
+  lamports       BigInt
+  txSig          String?
+  createdAt      DateTime @default(now())
+  challenge      Challenge @relation(fields: [challengeId], references: [id])
+}
