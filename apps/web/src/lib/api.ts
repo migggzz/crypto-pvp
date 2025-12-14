@@ -1,6 +1,6 @@
 import { getSessionToken } from "./siws";
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000";
+const apiBase = process.env.NEXT_PUBLIC_API_BASE || "https://api.idareyou.ainanosolutions.com";
 
 async function request(path: string, init?: RequestInit) {
   const token = getSessionToken();
