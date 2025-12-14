@@ -47,10 +47,10 @@ function normalizeMarket(raw: any): Market | null {
 async function fetchKalshiMarkets(): Promise<Market[]> {
   const headers: Record<string, string> = {};
   if (config.kalshiApiKey) headers["X-API-Key"] = config.kalshiApiKey;
-  const url = `${config.kalshiBaseUrl.replace(/\/$/, "")}/markets`;
+  const url = `${config.kalshiBaseUrl.replace(/\/$/, "")}/markets?limit=200`;
   const res = await request(url, { method: "GET", headers });
   if (res.statusCode >= 400) throw new Error(`Kalshi ${res.statusCode}`);
-  const body = await res.body.json();
+  const body: any = await res.body.json();
   const markets = Array.isArray(body?.markets) ? body.markets : Array.isArray(body) ? body : [];
   const normalized = markets.map(normalizeMarket).filter(Boolean) as Market[];
   if (normalized.length === 0) throw new Error("No markets returned");

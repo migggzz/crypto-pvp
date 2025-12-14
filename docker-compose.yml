@@ -33,7 +33,7 @@ services:
       TREASURY_PUBKEY: ${TREASURY_PUBKEY}
       WEB_ORIGIN: ${WEB_ORIGIN}
     ports:
-      - "38000:8000"
+      - "8000:8000"
     depends_on:
       - postgres
       - redis
@@ -48,7 +48,7 @@ services:
       NEXT_PUBLIC_SOLANA_NETWORK: http://localhost:8899
       NEXT_PUBLIC_PROGRAM_ID: ${PROGRAM_ID}
     ports:
-      - "33000:3000"
+      - "3000:3000"
     depends_on:
       - api
 
