@@ -1,16 +1,16 @@
-- [ ] Replace Kalshi endpoints with official authenticated/public market feeds instead of stub data.
-- [ ] Wire frontend challenge creation/join/deposit flows to real on-chain transactions (wallet-signed) and pass PDAs back to the API.
-- [ ] Add real queue-driven resolution pipeline (worker consuming Kalshi resolutions, enqueueing jobs with side and tx data).
-- [ ] Secure SIWS JWT with rotating secrets and refresh tokens; add `/auth/me` guard middleware in web.
-- [ ] Implement role-based access control so only the oracle authority can hit `/resolution` routes.
-- [ ] Add API integration tests covering SIWS, markets cache, challenge CRUD, and resolution.
-- [ ] Add migration/Prisma schema evolution for treasury fee percentages and SPL-token support.
-- [ ] Extend escrow program to support SPL token vaults and configurable fees.
-- [ ] Add cancel/refund flows in the frontend that call the on-chain `cancel` instruction.
-- [ ] Store on-chain tx signatures for initialize/join/deposit/resolve in Postgres for auditability.
-- [ ] Expose a public `/markets/refresh` endpoint (authenticated) for manual cache refresh from Kalshi.
-- [ ] Build admin UI for worker queue visibility and manual replays.
-- [ ] Harden vault PDA sizing and add account-size/unit tests on the program.
-- [ ] Add better error surfaces in the UI (toasts) and optimistic UI updates.
-- [ ] Create production Dockerfiles and CI workflows (lint, typecheck, anchor test, API test).
-- [ ] Document oracle authority key management (KMS/HSM) and rotate keys across environments.
+# Project TODO (source of truth)
+
+- [x] Replace Kalshi endpoints with authenticated/public feeds and persist markets (falls back to stub on failure).
+- [x] Add `/markets/refresh` endpoint and worker refresh before resolution.
+- [x] UI refresh: navigation, WalletMultiButton, glass styling on home/dashboard/markets/challenges/admin.
+- [ ] Wire frontend challenge creation/join/deposit flows to real on-chain transactions (wallet-signed) and persist PDAs/tx signatures in Postgres.
+- [ ] Implement queue-driven resolution pipeline (worker consuming Kalshi resolutions, enqueue resolve jobs with side + tx data).
+- [ ] Secure SIWS JWT (rotating secret/refresh), add `/auth/me` guard and web middleware; gate admin routes with role.
+- [ ] Role-based access control so only oracle authority can hit `/resolution` routes; audit logging for admin actions.
+- [ ] API integration tests: SIWS, markets cache/refresh, challenge CRUD, deposits, resolution.
+- [ ] Add schema changes for treasury fee percentages and SPL-token support; extend program for SPL vaults and configurable fees.
+- [ ] Add cancel/refund flows in UI calling on-chain `cancel`; surface deposit/resolve tx signatures in UI.
+- [ ] Harden program: vault PDA sizing, unit tests for account sizes, SPL support stubs.
+- [ ] Improve UX polish: toasts, optimistic updates, loading states, better error surfaces.
+- [ ] Production hardening: Dockerfiles/CI (lint, typecheck, anchor test, API test), env validation, logging/metrics.
+- [ ] Oracle authority key management: document KMS/HSM use, rotation across environments.
