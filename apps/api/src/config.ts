@@ -7,6 +7,7 @@ export const config = {
   redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
   jwtSecret: process.env.API_JWT_SECRET || "dev-secret",
   kalshiBaseUrl: process.env.KALSHI_BASE_URL || "https://api.kalshi.com",
+  kalshiApiKey: process.env.KALSHI_API_KEY || "",
   solanaRpcUrl: process.env.SOLANA_RPC_URL || "http://localhost:8899",
   programId: process.env.PROGRAM_ID || "",
   oracleAuthority: process.env.ORACLE_AUTHORITY_KEYPAIR || "",

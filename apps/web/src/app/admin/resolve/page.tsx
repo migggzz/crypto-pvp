@@ -35,18 +35,18 @@ export default function ResolvePage() {
 
   return (
     <RequireAuth>
-      <div className="card">
-        <h2>Admin Resolution</h2>
-        <p>Oracle authority uses backend-admin key to call on-chain resolve instruction.</p>
+      <div className="card glass">
+        <h2 style={{ marginTop: 0 }}>Admin Resolution</h2>
+        <p style={{ color: "var(--muted)" }}>Oracle authority uses backend-admin key to call on-chain resolve instruction.</p>
         {eligible.map((c) => (
-          <div key={c.id} className="card" style={{ marginTop: 10 }}>
-            <p>ID: {c.id}</p>
-            <p>Ticker: {c.ticker}</p>
+          <div key={c.id} className="card glass" style={{ marginTop: 10 }}>
+            <p style={{ margin: 0, fontWeight: 700 }}>{c.ticker}</p>
+            <p style={{ color: "var(--muted)" }}>ID: {c.id}</p>
             <div style={{ display: "flex", gap: 8 }}>
-              <button onClick={() => resolve(c.id, 0)} style={{ padding: "8px 12px", borderRadius: 8, border: "none", background: "#233058", color: "#c3d3ff" }}>
+              <button onClick={() => resolve(c.id, 0)} className="btn-ghost">
                 Resolve NO (0)
               </button>
-              <button onClick={() => resolve(c.id, 1)} style={{ padding: "8px 12px", borderRadius: 8, border: "none", background: "#2b74ff", color: "white" }}>
+              <button onClick={() => resolve(c.id, 1)} className="btn-primary">
                 Resolve YES (1)
               </button>
             </div>

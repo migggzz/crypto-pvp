@@ -59,35 +59,37 @@ export default function ChallengeDetailPage() {
   if (!challenge) {
     return (
       <RequireAuth>
-        <div className="card">Loading challenge...</div>
+        <div className="card glass">Loading challenge...</div>
       </RequireAuth>
     );
   }
 
   return (
     <RequireAuth>
-      <div className="card">
-        <h2>Challenge {challenge.id}</h2>
-        <p>Ticker: {challenge.ticker}</p>
-        <p>Status: {challenge.status}</p>
-        <p>Stake: {challenge.stakeLamports} lamports</p>
-        <p>Creator side: {challenge.creatorSide}</p>
-        <p>Opponent side: {challenge.opponentSide ?? "TBD"}</p>
-        {challenge.resultSide !== undefined && <p>Result side: {challenge.resultSide}</p>}
+      <div className="card glass">
+        <h2 style={{ marginTop: 0 }}>Challenge {challenge.id}</h2>
+        <div style={{ display: "grid", gap: 6, color: "var(--muted)" }}>
+          <div className="pill">Ticker: {challenge.ticker}</div>
+          <span>Status: {challenge.status}</span>
+          <span>Stake: {challenge.stakeLamports} lamports</span>
+          <span>Creator side: {challenge.creatorSide}</span>
+          <span>Opponent side: {challenge.opponentSide ?? "TBD"}</span>
+          {challenge.resultSide !== undefined && <span>Result side: {challenge.resultSide}</span>}
+        </div>
         <div style={{ marginTop: 12, display: "flex", gap: 10 }}>
-          <div className="card" style={{ minWidth: 240 }}>
+          <div className="card glass" style={{ minWidth: 240 }}>
             <h4>Join</h4>
             <p>Pick the opposite side to join.</p>
             <input type="number" value={joinSide} onChange={(e) => setJoinSide(Number(e.target.value))} />
-            <button onClick={join} style={{ marginTop: 8, padding: "8px 12px", borderRadius: 8, border: "none", background: "#2b74ff", color: "white" }}>
+            <button onClick={join} className="btn-primary" style={{ marginTop: 8 }}>
               Join Challenge
             </button>
           </div>
-          <div className="card" style={{ minWidth: 240 }}>
+          <div className="card glass" style={{ minWidth: 240 }}>
             <h4>Deposit</h4>
             <p>Submit on-chain deposit to escrow vault.</p>
             <input type="number" value={depositLamports} onChange={(e) => setDepositLamports(Number(e.target.value))} />
-            <button onClick={deposit} style={{ marginTop: 8, padding: "8px 12px", borderRadius: 8, border: "none", background: "#2b74ff", color: "white" }}>
+            <button onClick={deposit} className="btn-primary" style={{ marginTop: 8 }}>
               Deposit Stake
             </button>
           </div>

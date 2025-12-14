@@ -6,21 +6,21 @@ import RequireAuth from "../../components/RequireAuth";
 export default function DashboardPage() {
   return (
     <RequireAuth>
-      <div className="card">
-        <h2>Dashboard</h2>
-        <p>View markets, create challenges, and manage live positions.</p>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 10 }}>
-          <Link href="/markets" className="card" style={{ textDecoration: "none", color: "inherit", minWidth: 220 }}>
+      <div className="card glass">
+        <h2 style={{ marginTop: 0 }}>Control Center</h2>
+        <p style={{ color: "var(--muted)" }}>Track markets, spin up challenges, and resolve outcomes.</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12, marginTop: 14 }}>
+          <Link href="/markets" className="card glass" style={{ textDecoration: "none", color: "inherit" }}>
             <h3>Markets</h3>
-            <p>Browse Kalshi markets mirrored for PvP challenges.</p>
+            <p style={{ color: "var(--muted)" }}>Live Kalshi mirrors cached by the API.</p>
           </Link>
-          <Link href="/challenges" className="card" style={{ textDecoration: "none", color: "inherit", minWidth: 220 }}>
+          <Link href="/challenges" className="card glass" style={{ textDecoration: "none", color: "inherit" }}>
             <h3>Challenges</h3>
-            <p>Create or join binary outcome challenges.</p>
+            <p style={{ color: "var(--muted)" }}>Create or join PvP positions, then deposit escrow.</p>
           </Link>
-          <Link href="/admin/resolve" className="card" style={{ textDecoration: "none", color: "inherit", minWidth: 220 }}>
+          <Link href="/admin/resolve" className="card glass" style={{ textDecoration: "none", color: "inherit" }}>
             <h3>Admin Resolve</h3>
-            <p>Oracle authority finalizes outcomes and triggers payouts.</p>
+            <p style={{ color: "var(--muted)" }}>Oracle authority triggers payouts.</p>
           </Link>
         </div>
       </div>

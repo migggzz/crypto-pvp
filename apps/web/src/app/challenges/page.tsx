@@ -47,41 +47,48 @@ export default function ChallengesPage() {
 
   return (
     <RequireAuth>
-      <div className="card">
-        <h2>Challenges</h2>
-        <p>Create or join a binary challenge. On-chain escrow handled by the Anchor program.</p>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          <div className="card" style={{ minWidth: 260 }}>
+      <div className="card glass">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            <h2 style={{ margin: 0 }}>Challenges</h2>
+            <p style={{ color: "var(--muted)" }}>Create or join binary challenges; escrow handled by the program.</p>
+          </div>
+          <span className="pill">{challenges.length} open</span>
+        </div>
+        <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginTop: 12 }}>
+          <div className="card glass" style={{ minWidth: 280, flex: "0 0 320px" }}>
             <h4>Create Challenge</h4>
-            <label>
-              Ticker
-              <input value={form.ticker} onChange={(e) => setForm({ ...form, ticker: e.target.value })} style={{ width: "100%" }} />
+            <label style={{ display: "grid", gap: 6, marginTop: 8 }}>
+              <span style={{ color: "var(--muted)" }}>Ticker</span>
+              <input value={form.ticker} onChange={(e) => setForm({ ...form, ticker: e.target.value })} style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid var(--border)", background: "#0f1833", color: "var(--text)" }} />
             </label>
-            <label>
-              Your Side (0 = NO, 1 = YES)
-              <input type="number" value={form.side} onChange={(e) => setForm({ ...form, side: Number(e.target.value) })} style={{ width: "100%" }} />
+            <label style={{ display: "grid", gap: 6, marginTop: 8 }}>
+              <span style={{ color: "var(--muted)" }}>Your Side (0 = NO, 1 = YES)</span>
+              <input type="number" value={form.side} onChange={(e) => setForm({ ...form, side: Number(e.target.value) })} style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid var(--border)", background: "#0f1833", color: "var(--text)" }} />
             </label>
-            <label>
-              Stake (lamports)
-              <input type="number" value={form.stakeLamports} onChange={(e) => setForm({ ...form, stakeLamports: Number(e.target.value) })} style={{ width: "100%" }} />
+            <label style={{ display: "grid", gap: 6, marginTop: 8 }}>
+              <span style={{ color: "var(--muted)" }}>Stake (lamports)</span>
+              <input type="number" value={form.stakeLamports} onChange={(e) => setForm({ ...form, stakeLamports: Number(e.target.value) })} style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid var(--border)", background: "#0f1833", color: "var(--text)" }} />
             </label>
-            <button onClick={submit} style={{ marginTop: 8, padding: "8px 12px", borderRadius: 8, border: "none", background: "#2b74ff", color: "white" }}>
-              Create
+            <button onClick={submit} className="btn-primary" style={{ marginTop: 12 }}>
+              Create Challenge
             </button>
             {message && <p>{message}</p>}
             {error && <p style={{ color: "#ff7b7b" }}>{error}</p>}
           </div>
           <div style={{ flex: 1 }}>
             <h4>Open Challenges</h4>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
               {challenges.map((c) => (
-                <div key={c.id} className="card">
-                  <p>Ticker: {c.ticker}</p>
-                  <p>Status: {c.status}</p>
-                  <p>Stake: {c.stakeLamports} lamports</p>
-                  <p>Creator side: {c.creatorSide}</p>
-                  <a href={`/challenges/${c.id}`} style={{ color: "#8bd3ff" }}>
-                    View
+                <div key={c.id} className="card glass">
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <p style={{ margin: 0, fontWeight: 700 }}>{c.ticker}</p>
+                    <span className="pill">{c.status}</span>
+                  </div>
+                  <p style={{ color: "var(--muted)" }}>Stake: {c.stakeLamports} lamports</p>
+                  <p style={{ color: "var(--muted)" }}>Creator side: {c.creatorSide}</p>
+                  <a href={`/challenges/${c.id}`} style={{ color: "var(--accent)" }}>
+                    View details
                   </a>
                 </div>
               ))}

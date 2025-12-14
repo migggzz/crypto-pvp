@@ -41,13 +41,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="card">
-      <h1>Sign-In With Solana</h1>
-      <p>Authenticate by signing a message with your wallet. No email/password required.</p>
+    <div className="card glass">
+      <h1 style={{ marginTop: 0 }}>Sign-In With Solana</h1>
+      <p style={{ color: "var(--muted)" }}>Authenticate by signing a message with your wallet. No email/password required.</p>
       <div style={{ margin: "12px 0" }}>
         <WalletConnect />
       </div>
-      <button onClick={handleSign} disabled={!connected || loading} style={{ padding: "10px 16px", borderRadius: 8, border: "none", background: "#2b74ff", color: "white" }}>
+      <button onClick={handleSign} disabled={!connected || loading} className="btn-primary">
         {loading ? "Signing..." : "Sign Message"}
       </button>
       {error && <p style={{ color: "#ff7b7b" }}>{error}</p>}
