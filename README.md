@@ -21,6 +21,11 @@ pnpm dev             # runs web (3000) + api (8000)
 ## Environment
 Set the variables in `.env.example` before running. Do not commit real secrets. In production, store the oracle authority keypair in KMS/HSM; never on disk in plaintext.
 
+### Domains (current)
+- Web: `https://idareyou.ainanosolutions.com`
+- API: `http://api.idareyou.ainanosolutions.com`
+- The app is currently HTTP end-to-end for tunneling; TLS will be offloaded by Traefik/Coolify or Cloudflare later. Adjust `WEB_ORIGIN`, `API_ORIGIN`, and `NEXT_PUBLIC_API_BASE` in `.env` if the domains change.
+
 ## Docker services
 - Postgres: 5432
 - Redis: 6379

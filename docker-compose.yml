@@ -18,9 +18,7 @@ services:
       - "6379:6379"
 
   api:
-    build:
-      context: .
-      dockerfile: ./apps/api/Dockerfile
+    image: migggzz/crypto-pvp-api:latest
     env_file: .env
     environment:
       DATABASE_URL: ${DATABASE_URL}
@@ -39,9 +37,7 @@ services:
       - redis
 
   web:
-    build:
-      context: .
-      dockerfile: ./apps/web/Dockerfile
+    image: migggzz/crypto-pvp-web:latest
     env_file: .env
     environment:
       NEXT_PUBLIC_API_BASE: ${NEXT_PUBLIC_API_BASE}

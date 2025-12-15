@@ -35,5 +35,5 @@
 - Solana program config via `PROGRAM_ID`, `ORACLE_AUTHORITY_KEYPAIR`, `TREASURY_PUBKEY`, `SOLANA_RPC_URL`; on-chain TX wiring still TODO.
 
 ## Running
-- Set `.env` with production domains and credentials.
-- `docker compose up --build` (ports: web 3000, api 8000) or deploy images with the same env vars in your platform.
+- Set `.env` with the current HTTP domains and credentials (TLS will be handled by the edge/proxy when deployed).
+- `docker compose up --build` (ports: web 3000, api 8000) or deploy images with the same env vars in your platform; tunnels can forward 3000/8000 to the HTTP domains above until Traefik/Cloudflare terminates HTTPS.
