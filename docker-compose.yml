@@ -31,6 +31,7 @@ services:
       ORACLE_AUTHORITY_KEYPAIR: ${ORACLE_AUTHORITY_KEYPAIR}
       TREASURY_PUBKEY: ${TREASURY_PUBKEY}
       WEB_ORIGIN: ${WEB_ORIGIN}
+    command: ["sh", "-c", "pnpm prisma db push && pnpm start"]
     depends_on:
       - postgres
       - redis
