@@ -13,17 +13,22 @@ export async function challengeRoutes(fastify: FastifyInstance) {
     }
     return data;
   };
+  const withNames = (challenge: any) => {
+    const serialized = serialize(challenge);
+    const creatorName = challenge?.creatorUser?.username || challenge?.creatorPublicKey;
+    return { ...serialized, creatorName };
+  };
 
   fastify.get("/", { preHandler: [fastify.authenticate] }, async () => {
     const challenges = await listChallenges();
-    return { challenges: serialize(challenges) };
+    return { challenges: serialize(challenges).map(withNames) };
   });
 
   fastify.get("/:id", { preHandler: [fastify.authenticate] }, async (request, reply) => {
     const id = (request.params as any).id;
     const challenge = await getChallenge(id);
     if (!challenge) return reply.code(404).send({ error: "Not found" });
-    return { challenge: serialize(challenge) };
+    return { challenge: withNames(challenge) };
   });
 
   fastify.post("/", { preHandler: [fastify.authenticate] }, async (request) => {
@@ -34,14 +39,14 @@ export async function challengeRoutes(fastify: FastifyInstance) {
       creatorSide: Number(body.creatorSide),
       stakeLamports: Number(body.stakeLamports)
     });
-    return { challenge: serialize(challenge) };
+    return { challenge: withNames(challenge) };
   });
 
   fastify.post("/:id/join", { preHandler: [fastify.authenticate] }, async (request, reply) => {
     const id = (request.params as any).id;
     const body: any = request.body;
     const challenge = await joinChallenge(id, (request as any).user?.publicKey, Number(body.opponentSide));
-    return { challenge: serialize(challenge) };
+    return { challenge: withNames(challenge) };
   });
 
   fastify.post("/:id/deposit", { preHandler: [fastify.authenticate] }, async (request, reply) => {

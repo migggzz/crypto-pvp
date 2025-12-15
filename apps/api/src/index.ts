@@ -7,6 +7,7 @@ import { authRoutes } from "./routes/auth";
 import { marketRoutes } from "./routes/markets";
 import { challengeRoutes } from "./routes/challenges";
 import { resolutionRoutes } from "./routes/resolution";
+import { userRoutes } from "./routes/users";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -63,6 +64,7 @@ export function buildServer(): FastifyInstance {
 
   app.register(healthRoutes, { prefix: "/health" });
   app.register(authRoutes, { prefix: "/auth" });
+  app.register(userRoutes, { prefix: "/users" });
   app.register(marketRoutes, { prefix: "/markets" });
   app.register(challengeRoutes, { prefix: "/challenges" });
   app.register(resolutionRoutes, { prefix: "/resolution" });

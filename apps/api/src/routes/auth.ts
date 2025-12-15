@@ -4,6 +4,7 @@ import { PublicKey } from "@solana/web3.js";
 import { randomBytes } from "crypto";
 import { config } from "../config";
 import nacl from "tweetnacl";
+import { ensureUser, getUser } from "../services/users";
 
 const nonceCache = new NodeCache({ stdTTL: 300 });
 
@@ -34,8 +35,10 @@ export async function authRoutes(fastify: FastifyInstance) {
       const ok = nacl.sign.detached.verify(msg, sig, pubkey.toBytes());
       if (!ok) return reply.code(401).send({ error: "Invalid signature" });
 
+      await ensureUser(publicKey);
+      const user = await getUser(publicKey);
       const token = fastify.jwt.sign({ publicKey }, { expiresIn: "1d" });
-      return { token, publicKey };
+      return { token, publicKey, username: user?.username ?? publicKey };
     } catch (err: any) {
       request.log.error(err);
       return reply.code(500).send({ error: "Verification failed" });
@@ -43,6 +46,8 @@ export async function authRoutes(fastify: FastifyInstance) {
   });
 
   fastify.get("/me", { preHandler: [fastify.authenticate] }, async (request) => {
-    return { publicKey: (request as any).user?.publicKey };
+    const publicKey = (request as any).user?.publicKey;
+    const user = (await getUser(publicKey)) ?? (await ensureUser(publicKey));
+    return { publicKey, username: user?.username ?? publicKey };
   });
 }

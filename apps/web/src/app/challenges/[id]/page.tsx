@@ -9,6 +9,8 @@ type Challenge = {
   id: string;
   ticker: string;
   status: string;
+  creatorName?: string;
+  creatorPublicKey?: string;
   creatorSide: number;
   opponentSide?: number;
   stakeLamports: number;
@@ -70,6 +72,7 @@ export default function ChallengeDetailPage() {
         <h2 style={{ marginTop: 0 }}>Challenge {challenge.id}</h2>
         <div style={{ display: "grid", gap: 6, color: "var(--muted)" }}>
           <div className="pill">Ticker: {challenge.ticker}</div>
+          <span>Creator: {challenge.creatorName || challenge.creatorPublicKey}</span>
           <span>Status: {challenge.status}</span>
           <span>Stake: {challenge.stakeLamports} lamports</span>
           <span>Creator side: {challenge.creatorSide}</span>

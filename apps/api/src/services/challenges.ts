@@ -9,11 +9,11 @@ type CreateChallengeInput = {
 };
 
 export async function listChallenges() {
-  return prisma.challenge.findMany({ orderBy: { createdAt: "desc" }, take: 100 });
+  return prisma.challenge.findMany({ orderBy: { createdAt: "desc" }, take: 100, include: { creatorUser: true } });
 }
 
 export async function getChallenge(id: string) {
-  return prisma.challenge.findUnique({ where: { id }, include: { deposits: true } });
+  return prisma.challenge.findUnique({ where: { id }, include: { deposits: true, creatorUser: true } });
 }
 
 export async function createChallenge(input: CreateChallengeInput) {
@@ -27,19 +27,21 @@ export async function createChallenge(input: CreateChallengeInput) {
       creatorSide: input.creatorSide,
       stakeLamports: BigInt(input.stakeLamports),
       status: "OPEN"
-    }
+    },
+    include: { creatorUser: true }
   });
 }
 
 export async function joinChallenge(id: string, opponentPublicKey: string, opponentSide: number) {
   return prisma.challenge.update({
     where: { id },
-    data: { opponentPublicKey, opponentSide, status: "OPEN" }
+    data: { opponentPublicKey, opponentSide, status: "OPEN" },
+    include: { creatorUser: true }
   });
 }
 
 export async function recordDeposit(id: string, userPublicKey: string, lamports: number) {
-  const challenge = await prisma.challenge.findUnique({ where: { id }, include: { deposits: true } });
+  const challenge = await prisma.challenge.findUnique({ where: { id }, include: { deposits: true, creatorUser: true } });
   if (!challenge) throw new Error("Challenge not found");
   const deposit = await prisma.deposit.create({
     data: {

@@ -7,6 +7,7 @@ import { api } from "../../lib/api";
 type Challenge = {
   id: string;
   ticker: string;
+  creatorName?: string;
   creatorSide: number;
   opponentSide?: number;
   status: string;
@@ -85,6 +86,7 @@ export default function ChallengesPage() {
                     <p style={{ margin: 0, fontWeight: 700 }}>{c.ticker}</p>
                     <span className="pill">{c.status}</span>
                   </div>
+                  <p style={{ color: "var(--muted)", margin: "4px 0" }}>Creator: {c.creatorName || "Unknown"}</p>
                   <p style={{ color: "var(--muted)" }}>Stake: {c.stakeLamports} lamports</p>
                   <p style={{ color: "var(--muted)" }}>Creator side: {c.creatorSide}</p>
                   <a href={`/challenges/${c.id}`} style={{ color: "var(--accent)" }}>

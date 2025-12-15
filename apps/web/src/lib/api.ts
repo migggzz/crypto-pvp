@@ -23,5 +23,7 @@ export const api = {
   createChallenge: (body: unknown) => request("/challenges", { method: "POST", body: JSON.stringify(body) }),
   joinChallenge: (id: string, body: unknown) => request(`/challenges/${id}/join`, { method: "POST", body: JSON.stringify(body) }),
   deposit: (id: string, body: unknown) => request(`/challenges/${id}/deposit`, { method: "POST", body: JSON.stringify(body) }),
-  resolve: (id: string, side: number) => request(`/resolution/${id}`, { method: "POST", body: JSON.stringify({ side }) })
+  resolve: (id: string, side: number) => request(`/resolution/${id}`, { method: "POST", body: JSON.stringify({ side }) }),
+  me: () => request("/users/me"),
+  updateUsername: (username: string) => request("/users/me", { method: "PATCH", body: JSON.stringify({ username }) })
 };

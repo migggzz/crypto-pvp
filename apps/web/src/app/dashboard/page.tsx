@@ -22,6 +22,10 @@ export default function DashboardPage() {
             <h3>Admin Resolve</h3>
             <p style={{ color: "var(--muted)" }}>Oracle authority triggers payouts.</p>
           </Link>
+          <Link href="/settings" className="card glass" style={{ textDecoration: "none", color: "inherit" }}>
+            <h3>Settings</h3>
+            <p style={{ color: "var(--muted)" }}>Pick or change your username linked to this wallet.</p>
+          </Link>
         </div>
       </div>
     </RequireAuth>

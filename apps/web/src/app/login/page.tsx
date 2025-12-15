@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import WalletConnect from "../../components/WalletConnect";
 import { requestNonce, verifySignature } from "../../lib/siws";
+import { api } from "../../lib/api";
 import { Buffer } from "buffer";
 
 export default function LoginPage() {
@@ -32,7 +33,9 @@ export default function LoginPage() {
         signature: sigBase64,
         message
       });
-      router.push("/dashboard");
+      const profile = await api.me();
+      const isDefaultUsername = !profile?.username || profile.username === publicKey.toBase58();
+      router.push(isDefaultUsername ? "/settings" : "/dashboard");
     } catch (err: any) {
       setError(err.message || "Failed to sign in");
     } finally {
