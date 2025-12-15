@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:15
@@ -19,6 +17,9 @@ services:
 
   api:
     image: migggzz/crypto-pvp-api:latest
+    networks:
+      - default
+      - traefik
     env_file: .env
     environment:
       DATABASE_URL: ${DATABASE_URL}
@@ -30,23 +31,83 @@ services:
       ORACLE_AUTHORITY_KEYPAIR: ${ORACLE_AUTHORITY_KEYPAIR}
       TREASURY_PUBKEY: ${TREASURY_PUBKEY}
       WEB_ORIGIN: ${WEB_ORIGIN}
-    ports:
-      - "8000:8000"
     depends_on:
       - postgres
       - redis
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=crypto-pvp_traefik
+      - traefik.http.routers.api.rule=Host(`apiidareyou.ainanosolutions.com`)
+      - traefik.http.routers.api.entrypoints=web,websecure
+      - traefik.http.routers.api.tls=true
+      - traefik.http.routers.api.tls.certresolver=letsencrypt
+      - traefik.http.services.api.loadbalancer.server.port=8000
 
   web:
     image: migggzz/crypto-pvp-web:latest
+    networks:
+      - default
+      - traefik
     env_file: .env
     environment:
+      NODE_ENV: production
       NEXT_PUBLIC_API_BASE: ${NEXT_PUBLIC_API_BASE}
-      NEXT_PUBLIC_SOLANA_NETWORK: http://localhost:8899
+      NEXT_PUBLIC_SOLANA_NETWORK: ${NEXT_PUBLIC_SOLANA_NETWORK}
       NEXT_PUBLIC_PROGRAM_ID: ${PROGRAM_ID}
-    ports:
-      - "3000:3000"
     depends_on:
       - api
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=crypto-pvp_traefik
+      - traefik.http.routers.web.rule=Host(`idareyou.ainanosolutions.com`)
+      - traefik.http.routers.web.entrypoints=web,websecure
+      - traefik.http.routers.web.tls=true
+      - traefik.http.routers.web.tls.certresolver=letsencrypt
+      - traefik.http.services.web.loadbalancer.server.port=3000
+
+  webtest:
+    image: nginx:alpine
+    networks:
+      - traefik
+    volumes:
+      - ./webtest:/usr/share/nginx/html:ro
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=crypto-pvp_traefik
+      - traefik.http.routers.webtest.rule=Host(`test.ainanosolutions.com`)
+      - traefik.http.routers.webtest.entrypoints=web,websecure
+      - traefik.http.routers.webtest.tls=true
+      - traefik.http.routers.webtest.tls.certresolver=letsencrypt
+      - traefik.http.services.webtest.loadbalancer.server.port=80
+
+  traefik:
+    image: traefik:v3.1
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --api.insecure=true
+      - --log.level=DEBUG
+      - --accesslog=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # dashboard (optional)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_letsencrypt:/letsencrypt
+    networks:
+      - traefik
 
 volumes:
   pgdata:
+  traefik_letsencrypt:
+
+networks:
+  traefik:
+    driver: bridge

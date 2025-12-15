@@ -2,16 +2,28 @@ import { FastifyInstance } from "fastify";
 import { createChallenge, getChallenge, joinChallenge, listChallenges, recordDeposit } from "../services/challenges";
 
 export async function challengeRoutes(fastify: FastifyInstance) {
+  const serialize = (data: any): any => {
+    if (typeof data === "bigint") return data.toString();
+    if (data instanceof Date) return data.toISOString();
+    if (Array.isArray(data)) return data.map(serialize);
+    if (data && typeof data === "object") {
+      const out: any = {};
+      for (const [k, v] of Object.entries(data)) out[k] = serialize(v);
+      return out;
+    }
+    return data;
+  };
+
   fastify.get("/", { preHandler: [fastify.authenticate] }, async () => {
     const challenges = await listChallenges();
-    return { challenges };
+    return { challenges: serialize(challenges) };
   });
 
   fastify.get("/:id", { preHandler: [fastify.authenticate] }, async (request, reply) => {
     const id = (request.params as any).id;
     const challenge = await getChallenge(id);
     if (!challenge) return reply.code(404).send({ error: "Not found" });
-    return { challenge };
+    return { challenge: serialize(challenge) };
   });
 
   fastify.post("/", { preHandler: [fastify.authenticate] }, async (request) => {
@@ -22,20 +34,20 @@ export async function challengeRoutes(fastify: FastifyInstance) {
       creatorSide: Number(body.creatorSide),
       stakeLamports: Number(body.stakeLamports)
     });
-    return { challenge };
+    return { challenge: serialize(challenge) };
   });
 
   fastify.post("/:id/join", { preHandler: [fastify.authenticate] }, async (request, reply) => {
     const id = (request.params as any).id;
     const body: any = request.body;
     const challenge = await joinChallenge(id, (request as any).user?.publicKey, Number(body.opponentSide));
-    return { challenge };
+    return { challenge: serialize(challenge) };
   });
 
   fastify.post("/:id/deposit", { preHandler: [fastify.authenticate] }, async (request, reply) => {
     const id = (request.params as any).id;
     const body: any = request.body;
     const result = await recordDeposit(id, (request as any).user?.publicKey, Number(body.lamports));
-    return result;
+    return serialize(result);
   });
 }

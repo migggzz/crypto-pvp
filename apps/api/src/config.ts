@@ -12,6 +12,6 @@ export const config = {
   programId: process.env.PROGRAM_ID || "",
   oracleAuthority: process.env.ORACLE_AUTHORITY_KEYPAIR || "",
   treasuryPubkey: process.env.TREASURY_PUBKEY || "",
-  webOrigin: process.env.WEB_ORIGIN || "https://idareyou.ainanosolutions.com",
+  webOrigin: process.env.WEB_ORIGIN || "http://idareyou.ainanosolutions.com",
   adminPublicKey: process.env.ADMIN_PUBLIC_KEY || ""
 };

@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000";
+  const apiBase = process.env.NEXT_PUBLIC_API_BASE || "https://apiidareyou.ainanosolutions.com";
 
   const handleSign = async () => {
     if (!publicKey || !signMessage) {

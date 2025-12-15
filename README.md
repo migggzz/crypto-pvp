@@ -23,7 +23,7 @@ Set the variables in `.env.example` before running. Do not commit real secrets. 
 
 ### Domains (current)
 - Web: `https://idareyou.ainanosolutions.com`
-- API: `http://api.idareyou.ainanosolutions.com`
+- API: `http://apiidareyou.ainanosolutions.com`
 - The app is currently HTTP end-to-end for tunneling; TLS will be offloaded by Traefik/Coolify or Cloudflare later. Adjust `WEB_ORIGIN`, `API_ORIGIN`, and `NEXT_PUBLIC_API_BASE` in `.env` if the domains change.
 
 ## Docker services

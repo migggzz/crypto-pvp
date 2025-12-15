@@ -2,7 +2,7 @@
 
 ## Domains and URLs
 - Web app: `https://idareyou.ainanosolutions.com`
-- API: `https://api.idareyou.ainanosolutions.com`
+- API: `https://apiidareyou.ainanosolutions.com`
 - Environment knobs:
   - `.env/.env.example` `WEB_ORIGIN`, `API_ORIGIN`, `NEXT_PUBLIC_API_BASE` control the public web/API domains.
   - API service reads `WEB_ORIGIN` for CORS and `API_JWT_SECRET`, DB/Redis URLs, Solana + Kalshi config.

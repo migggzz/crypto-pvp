@@ -24,9 +24,32 @@ declare module "@fastify/jwt" {
   }
 }
 
+declare global {
+  interface BigInt {
+    toJSON(): string;
+  }
+}
+
+// Ensure BigInt fields (from Prisma) serialize cleanly in API responses
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString();
+};
+
 export function buildServer(): FastifyInstance {
   const app = Fastify({ logger: true });
-  app.register(cors, { origin: [config.webOrigin, "http://localhost:3000"], credentials: true });
+  const allowedOrigins = Array.from(
+    new Set(
+      [config.webOrigin, config.webOrigin.replace(/^http:\/\//, "https://"), "http://localhost:3000", "https://localhost:3000"].filter(Boolean)
+    )
+  );
+  app.register(cors, {
+    origin: (origin, cb) => {
+      if (!origin) return cb(null, true); // allow server-to-server/no-origin
+      if (allowedOrigins.includes(origin)) return cb(null, true);
+      return cb(new Error("Origin not allowed"), false);
+    },
+    credentials: true
+  });
   app.register(fastifyJwt, { secret: config.jwtSecret });
 
   app.decorate("authenticate", async function (request: any, reply: any) {
