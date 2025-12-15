@@ -38,17 +38,8 @@ declare global {
 
 export function buildServer(): FastifyInstance {
   const app = Fastify({ logger: true });
-  const allowedOrigins = Array.from(
-    new Set(
-      [config.webOrigin, config.webOrigin.replace(/^http:\/\//, "https://"), "http://localhost:3000", "https://localhost:3000"].filter(Boolean)
-    )
-  );
   app.register(cors, {
-    origin: (origin, cb) => {
-      if (!origin) return cb(null, true); // allow server-to-server/no-origin
-      if (allowedOrigins.includes(origin)) return cb(null, true);
-      return cb(new Error("Origin not allowed"), false);
-    },
+    origin: (_origin, cb) => cb(null, true), // allow all origins
     credentials: true
   });
   app.register(fastifyJwt, { secret: config.jwtSecret });
